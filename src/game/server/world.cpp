@@ -730,6 +730,13 @@ string_t g_iszFuncBrushClassname = NULL_STRING;
 
 void CWorld::Precache( void )
 {
+#ifdef CVOX
+	ConVarRef fullbrightfix("mat_fullbright");
+	fullbrightfix.SetValue(0);  // Try and disable fullbright. Done to fix transitions from fullbright maps
+								// when normal maps after them keep the fullbright turned on. 
+								// Doing this in Precache() because we want to preceed dynamic models spawn
+								// otherwise there's this glitch when they retain fullbright on them. 
+#endif
 	COM_TimestampedLog( "CWorld::Precache - Start" );
 
 	g_WorldEntity = this;
