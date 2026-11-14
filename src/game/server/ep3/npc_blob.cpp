@@ -2945,6 +2945,9 @@ void CNPC_Blob::UpdateSupport( CBlobGroup* pGroup )
 //-----------------------------------------------------------------------------
 void CNPC_Blob::InitParticleNavigation( )
 {
+#ifdef CVOX // fix the demo blob crash
+	if (!m_pMainGroup) return;
+#endif
 	// FIXME: Eventually, we don't want to do this
 	m_pMainGroup->m_waypoints.RemoveAll();
 
@@ -9353,8 +9356,13 @@ void CNPC_Blob::StartTask( const Task_t *pTask )
 		}
 		else if ( !IsMostlyBrain() )
 		{
-			m_pSpitTentacle = TentacleCreate( this, BLOB_TENTACLE_ACTION_SPIT, 
-				m_pMainGroup->m_root, Vector( 0, 0, BLOB_MAIN_SPIT_HEIGHT ) );
+#ifdef CVOX // fix the demo blob crash
+			if (m_pMainGroup)
+#endif
+			{
+				m_pSpitTentacle = TentacleCreate(this, BLOB_TENTACLE_ACTION_SPIT,
+					m_pMainGroup->m_root, Vector(0, 0, BLOB_MAIN_SPIT_HEIGHT));
+			}
 		}
 		break;
 
